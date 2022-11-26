@@ -70,6 +70,7 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
         evDateL.setEnabled(true);
         jourNameL = new JLabel("       Journal Name ");
         jourNameL.setEnabled(true);
+        //gettext().toString
 		evNameT = new JTextField();
         evNameT.setEnabled(true);
         evDateT = new JTextField();
@@ -124,23 +125,27 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
 		c.gridy = 4;
         this.add(outputPanel, c);
         
-
 		this.setBounds(50, 50, 600, 500);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	static int choice=0;
+
 	//this function is the listener for three check boxes and two radio buttons
 	public void itemStateChanged(ItemEvent e) {
-
+		
 	    Object source = e.getItemSelectable();
 
 	    if (source == eventConference) {
+	    	choice = 1 ;
 	    	System.out.println("1");
 
 	    } else if (source == eventJournal) {
+	    	choice = 2 ;
 	    	System.out.println("2");
 
 	    } else if (source == eventBook) {
+	    	choice = 3 ;
 	    	System.out.println("3");
 
 	    }	    
@@ -148,7 +153,30 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
 	
     /** Listens to the submit button click */
     public void actionPerformed(ActionEvent e) {
-    	queryOutput.setText("Show the output of the query here!");
+    	A02MiddleTier resu =  new A02MiddleTier();
+    	final String eventName;
+    	final String date;
+    	final String journalName;
+    	final String output;
+    	
+    	if(choice==1) {
+    		eventName = evNameL.getText();
+			date = evDateT.getText();
+    		output = resu.insertEventConference(eventName,date);
+    		queryOutput.setText(output);
+    		
+    	}
+    	if(choice==2) {
+    		eventName = evNameL.getText();
+    		journalName = jourNameL.getText();
+    		output = resu.insertEventJournal(eventName,journalName);
+    		queryOutput.setText(output);
+    	}
+    	if(choice==3) {
+    		eventName = evNameL.getText();
+    		output = resu.insertEventBook(eventName);
+    		queryOutput.setText(output);
+    	}
     }
 
 }
