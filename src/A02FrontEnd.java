@@ -23,9 +23,12 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
     JTextField evDateT;
     JTextField jourNameT;
     JButton submitQuery;
+    A02MiddleTier resu;
+    String output = "";
     
 	public A02FrontEnd() {
 		initialize();
+		resu =  new A02MiddleTier();
 	}
 
 	/**
@@ -71,7 +74,6 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
         evDateL.setEnabled(true);
         jourNameL = new JLabel("       Journal Name ");
         jourNameL.setEnabled(true);
-        //gettext().toString
 		evNameT = new JTextField();
         evNameT.setEnabled(true);
         evDateT = new JTextField();
@@ -153,36 +155,43 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
 	}
 	
     /** Listens to the submit button click */
-    public void actionPerformed(ActionEvent e) {
-    	A02MiddleTier resu =  new A02MiddleTier();
+    public void actionPerformed(ActionEvent e){
+    	
     	String eventName;
 		String date;
     	String journalName;
-    	String output;
+    	
     	
     	if(choice==1) {
     		eventName = evNameT.getText();
 			date = evDateT.getText();
 			try {
-				output = resu.insertEventConference(eventName,date);
-				queryOutput.setText(output);
-			} catch (SQLException ex) {
+			output += resu.insertEventConference(eventName,date);
+			
+    		}catch (Exception ex) {
 				ex.printStackTrace();
 			}
-
     		
     	}
     	if(choice==2) {
     		eventName = evNameT.getText();
     		journalName = jourNameT.getText();
-    		output = resu.insertEventJournal(eventName,journalName);
-    		queryOutput.setText(output);
+    		try {
+        		output += resu.insertEventJournal(eventName,journalName);
+    		}catch (Exception ex) {
+				ex.printStackTrace();
+			}
     	}
     	if(choice==3) {
     		eventName = evNameT.getText();
-    		output = resu.insertEventBook(eventName);
-    		queryOutput.setText(output);
+    		try {
+    		output += resu.insertEventBook(eventName);
+    		}catch (Exception ex) {
+				ex.printStackTrace();
+			}
     	}
+    	
+    	queryOutput.setText(output);
     }
 
 }
