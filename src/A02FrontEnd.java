@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.text.*;
 
 public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
@@ -154,26 +155,31 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
     /** Listens to the submit button click */
     public void actionPerformed(ActionEvent e) {
     	A02MiddleTier resu =  new A02MiddleTier();
-    	final String eventName;
-    	final String date;
-    	final String journalName;
-    	final String output;
+    	String eventName;
+		String date;
+    	String journalName;
+    	String output;
     	
     	if(choice==1) {
-    		eventName = evNameL.getText();
+    		eventName = evNameT.getText();
 			date = evDateT.getText();
-    		output = resu.insertEventConference(eventName,date);
-    		queryOutput.setText(output);
+			try {
+				output = resu.insertEventConference(eventName,date);
+				queryOutput.setText(output);
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+
     		
     	}
     	if(choice==2) {
-    		eventName = evNameL.getText();
-    		journalName = jourNameL.getText();
+    		eventName = evNameT.getText();
+    		journalName = jourNameT.getText();
     		output = resu.insertEventJournal(eventName,journalName);
     		queryOutput.setText(output);
     	}
     	if(choice==3) {
-    		eventName = evNameL.getText();
+    		eventName = evNameT.getText();
     		output = resu.insertEventBook(eventName);
     		queryOutput.setText(output);
     	}
