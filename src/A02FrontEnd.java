@@ -23,8 +23,8 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
     JTextField evDateT;
     JTextField jourNameT;
     JButton submitQuery;
-    A02MiddleTier resu;
-    String output = "";
+
+	A02MiddleTier resu;
     
 	public A02FrontEnd() {
 		initialize();
@@ -74,6 +74,7 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
         evDateL.setEnabled(true);
         jourNameL = new JLabel("       Journal Name ");
         jourNameL.setEnabled(true);
+        //gettext().toString
 		evNameT = new JTextField();
         evNameT.setEnabled(true);
         evDateT = new JTextField();
@@ -155,43 +156,40 @@ public class A02FrontEnd extends JFrame implements ItemListener, ActionListener{
 	}
 	
     /** Listens to the submit button click */
-    public void actionPerformed(ActionEvent e){
-    	
+    public void actionPerformed(ActionEvent e) {
+
     	String eventName;
 		String date;
     	String journalName;
-    	
+		String output = "";
     	
     	if(choice==1) {
     		eventName = evNameT.getText();
 			date = evDateT.getText();
 			try {
-			output += resu.insertEventConference(eventName,date);
-			
-    		}catch (Exception ex) {
+				output += resu.insertEventConference(eventName,date);
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-    		
     	}
     	if(choice==2) {
     		eventName = evNameT.getText();
     		journalName = jourNameT.getText();
-    		try {
-        		output += resu.insertEventJournal(eventName,journalName);
-    		}catch (Exception ex) {
+			try {
+				output += resu.insertEventJournal(eventName, journalName);
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
     	}
     	if(choice==3) {
     		eventName = evNameT.getText();
-    		try {
-    		output += resu.insertEventBook(eventName);
-    		}catch (Exception ex) {
+			try {
+				output += resu.insertEventBook(eventName);
+			} catch (Exception ex){
 				ex.printStackTrace();
 			}
     	}
-    	
-    	queryOutput.setText(output);
+		queryOutput.setText(output);
     }
 
 }

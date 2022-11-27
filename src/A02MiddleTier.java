@@ -6,12 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.*;
 
-
 public class A02MiddleTier {
 	//This class will contain your code for interacting with Database, acquire the query result and display it in the GUI text area.
 	String url = "jdbc:mysql://localhost:3306/a02schema?useSSL=false&serverTimezone=UTC";
 	String username = "root";
-	String password = "123456";
+	String password = "Abby6!644";
 	Connection con = null;
 	int id = 0;
 
@@ -21,21 +20,36 @@ public class A02MiddleTier {
 		try{
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			con = DriverManager.getConnection(url, username, password);
-			
+			/*
+			String stm = "show tables";
+			PreparedStatement p = con.prepareStatement(stm);
+			ResultSet r = p.executeQuery();
+			while (r.next()){
+				System.out.println(r.getString(1));
+			}
+
+			 */
+
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
+
+
 	}
 
 	public String insertEventConference(String name, String date) throws SQLException {
 		id++;
+
+		//check empty input
+		if (name.equals("") || date.equals("")){
+			return "Event Name and Event Date must not be empty.\n";
+		}
+
 		String eventName = name;
-		String eventWebLink = null;
-		String CFPText = null;
-		String city =null;
-		String country = null;
 		Date evdate = Date.valueOf(date);
+
+
 
 		//Prepare sql statement
 		String stmt1 = "insert into event(ID,Name) values(?,?)";
@@ -72,6 +86,8 @@ public class A02MiddleTier {
 			e.printStackTrace();
 		}
 
+		sb.append("\n");
+
 		String stmt4 = "select * from eventconference";
 		try {
 			PreparedStatement p4 = con.prepareStatement(stmt4);
@@ -85,15 +101,20 @@ public class A02MiddleTier {
 		}
 		sb.append("\n");
 
+
 		return sb.toString();
 	}
-	
+
 	public String insertEventJournal(String name, String jname) throws SQLException{
 		this.id++;
+
+		//check empty input
+		if (name.equals("") || jname.equals("")){
+			return "Event Name and Journal Name must not be empty.\n";
+		}
+
 		String eventName = name;
-		String eventWebLink = null;
-		String CFPText = null;
-		String publisher = null;
+		String journalName = jname;
 		String stmt1 = "insert into event(ID,Name) values(?,?)";
 		try {
 			PreparedStatement st1 = con.prepareStatement(stmt1);
@@ -105,19 +126,19 @@ public class A02MiddleTier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		String stmt2 = "insert into eventjournal(EventID,JournalName) values(?,?)";
 		try {
 			PreparedStatement st2 = con.prepareStatement(stmt2);
 			st2.clearParameters();
 			st2.setInt(1, id);
-			st2.setString(2, jname);
+			st2.setString(2, journalName);
 			st2.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
 		String stmt3 = "select * from event";
 		try {
@@ -130,6 +151,8 @@ public class A02MiddleTier {
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
+
+		sb.append("\n");
 
 		String stmt4 = "select * from eventjournal";
 		try {
@@ -145,13 +168,16 @@ public class A02MiddleTier {
 		sb.append("\n");
 		return sb.toString();
 	}
-	
+
 	public String insertEventBook(String name){
 		this.id++;
+
+		//check empty input
+		if (name.equals("")){
+			return "Event Name must not be empty.\n";
+		}
+
 		String eventName = name;
-		String eventWebLink = null;
-		String CFPText = null;
-		String publisher = null;
 		String stmt1 = "insert into event(ID,Name) values(?,?)";
 		try {
 			PreparedStatement st1 = con.prepareStatement(stmt1);
@@ -163,7 +189,7 @@ public class A02MiddleTier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		String stmt2 = "insert into eventbook(EventID) values(?)";
 		try {
 			PreparedStatement st2 = con.prepareStatement(stmt2);
@@ -174,7 +200,7 @@ public class A02MiddleTier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
 		String stmt3 = "select * from event";
 		try {
@@ -187,6 +213,8 @@ public class A02MiddleTier {
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
+
+		sb.append("\n");
 
 		String stmt4 = "select * from eventbook";
 		try {
@@ -203,7 +231,6 @@ public class A02MiddleTier {
 		return sb.toString();
 
 	}
-
 
 	public static void main(String args[]) throws SQLException, IOException{
 		A02MiddleTier a2m= new A02MiddleTier();
